@@ -1,5 +1,5 @@
 import logging # общедоступная библиотека
-from telegram.ext import Updater,CommandHandler # часть общепотребимой библиотеки
+from telegram.ext import CommandHandler,Updater # часть общепотребимой библиотеки
 import settings # мой модуль 
 
 logging.basicConfig(filename='bot.log',level = logging.INFO)
