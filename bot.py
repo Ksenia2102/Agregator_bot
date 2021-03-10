@@ -1,8 +1,8 @@
-import logging
-import settings
-from telegram.ext import Updater,CommandHandler
+import logging # общедоступная библиотека
+from telegram.ext import Updater,CommandHandler # часть общепотребимой библиотеки
+import settings # мой модуль 
 
-logging.basicConfig(filename = 'bot.log',level = logging.INFO)
+logging.basicConfig(filename='bot.log',level = logging.INFO)
 
 
 def start_user(update,context):
@@ -10,12 +10,10 @@ def start_user(update,context):
     update.message.reply_text(f'Здравствуй пользователь!')
 
 def main():
-    mybot = Updater(settings.API_KEY,use_context=True)
+    mybot = Updater(settings.API_KEY, use_context=True)
 
     dp = mybot.dispatcher
-    dp.add_handler(CommandHandler('start',start_user))
-
-    logging.info('Бот стартовал')
+    dp.add_handler(CommandHandler('start', start_user))
 
 
     mybot.start_polling()
