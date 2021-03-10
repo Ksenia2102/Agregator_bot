@@ -6,7 +6,6 @@ logging.basicConfig(filename='bot.log',level = logging.INFO)
 
 
 def start_user(update,context):
-    print('Вызван /start')
     update.message.reply_text(f'Здравствуй пользователь!')
 
 def main():
@@ -14,6 +13,8 @@ def main():
 
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler('start', start_user))
+
+    logging.info('Бот стартовал')
 
 
     mybot.start_polling()
