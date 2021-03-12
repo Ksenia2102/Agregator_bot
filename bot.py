@@ -1,21 +1,24 @@
-import logging # общедоступная библиотека
-from telegram.ext import CommandHandler,Updater # часть общепотребимой библиотеки
-import settings # мой модуль 
+import logging
+
+from telegram import KeyboardButton, ReplyKeyboardMarkup
+from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+
+import settings
+from handlers import start_bot
 
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 
-
-def start_user(update,context):
-    update.message.reply_text(f'Здравствуй пользователь!')
+PROXY = {
+    'proxy_url': settings.PROXY_URL,
+    'urllib3_proxy_kwargs': 
+        {'username': settings.PROXY_USERNAME, 
+        'password': settings.PROXY_PASSWORD}}
 
 def main():
-    mybot = Updater(settings.API_KEY, use_context=True)
-
+    mybot = Updater(settings.API_KEY, use_context=True, request_kwargs=PROXY)
     dp = mybot.dispatcher
-    dp.add_handler(CommandHandler('start', start_user))
 
-    logging.info('Бот стартовал')
-
+    dp.add_handler(CommandHandler('start', start_bot))
 
     mybot.start_polling()
     mybot.idle()
