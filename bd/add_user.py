@@ -1,12 +1,12 @@
 from db import db_session # добавление записи в базу данных Основная
-from models import Main
+from models import DifinitionOfSkill
 
-first=Main(direction=3, course_name='Курс Веб-аналитика', school_name=1, the_cost=35000, appraisal= 4.1,link='https://imba.ru/course/web-analytics?utm_medium=referral&utm_source=tutortop.ru&utm_campaign=partner')
+#first=Courses(direction=3, course_name='Курс Веб-аналитика', school_name=11, the_cost=38000, appraisal= 4.2,link='https://imba.ru/course/web-analytics?utm_medium=referral&utm_source=tutortop.ru&utm_campaign=partner')
 
-#second=direct(direction='Аналитика')
-#three=The_skill(skill='Машинное обучение')
-#four=The_Scholl(scholl='Convert Monster')
-#five = The_difinition_of_skill(course_name=1,skill=2) - Не работает 
+#second=Direction(flow='Аналитика')
+#three=Skill(knowledge='Машинное обучение') 
+#four=Scholl(scholl='Convert Monster')
+five =DifinitionOfSkill(course_name=1,skill=2) #Не работает 
 
 db_session.add(five)
 db_session.commit()
