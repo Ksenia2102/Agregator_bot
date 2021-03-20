@@ -23,7 +23,6 @@ def upload_study_options(data):
         all_study_options.append(study_option)
     db_session.bulk_insert_mappings(StudyOption, all_study_options, return_defaults=True)
     db_session.commit()
-    return all_study_options
 
 
 def upload_skills(data):
@@ -69,7 +68,11 @@ def upload_schools(data):
 
 
 if __name__ == "__main__":
-    # data2 = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
-    # upload_study_options(data2)
-    data = read_data('schools.csv', ['school'])
-    upload_schools(data)
+    # читаем инфо по направлениям и навыкам
+    study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
+    # загружаем направления и навыки в таблицы
+    upload_study_options(study_options_and_skills_data)
+    upload_skills(study_options_and_skills_data)
+    # читаем инфо по школам и загружаем в таблицу школ
+    schools_data = read_data('schools.csv', ['school'])
+    upload_schools(schools_data)
