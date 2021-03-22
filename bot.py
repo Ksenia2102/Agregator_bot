@@ -22,7 +22,7 @@ def main():
 
     # Основная линия диалога с пользователем
     main_dialog = ConversationHandler(
-        entry_points=[CommandHandler('start', start_bot)],
+        entry_points=[CommandHandler('start', start_bot)], #точка из которой стартует Converstation 
         states={
             'skills': [MessageHandler(Filters.text, generate_skills)],
             'courses': [MessageHandler(Filters.text, generate_courses)]

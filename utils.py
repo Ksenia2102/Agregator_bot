@@ -6,7 +6,7 @@ from settings import SKILLS, STUDY_OPTIONS
 def study_options_keybord():
     return ReplyKeyboardMarkup(
         [STUDY_OPTIONS, ['Затрудняюсь...']],
-        one_time_keyboard=True, resize_keyboard=True
+        one_time_keyboard=True, resize_keyboard=True # one time - клавитура проподает,resize-маштаб эстетитка 
         )
 
 
