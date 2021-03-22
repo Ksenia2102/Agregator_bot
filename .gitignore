@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 settings.py
-/.vscode/
-/data_base/config.py
+.vscode/
+data_base/config.py
