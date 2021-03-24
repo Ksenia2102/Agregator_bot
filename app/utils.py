@@ -1,6 +1,9 @@
 from telegram import ReplyKeyboardMarkup
 
-from settings import SKILLS, STUDY_OPTIONS
+from config import SKILLS, STUDY_OPTIONS
+
+from db import db_session, engine
+from db.models import StudyOption
 
 
 def study_options_keybord():
@@ -15,3 +18,7 @@ def skills_keyboard(study_option):
     return ReplyKeyboardMarkup(
         [skills], one_time_keyboard=True, resize_keyboard=True
     )
+
+def table_call():
+    calling_the_project_from_database = StudyOption.query.all()
+    return calling_the_project_from_database

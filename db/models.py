@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from db import Base, engine
 
-
 class Course(Base):
     __tablename__ = 'courses'
     id = Column(Integer, primary_key=True)
@@ -20,6 +19,9 @@ class StudyOption(Base):
     __tablename__ = 'study_options'
     id = Column(Integer, primary_key=True)
     study_option = Column(String)
+
+    def __repr__(self):
+        return f'{self.id},{self.study_option}'
 
 
 class Skill(Base):

@@ -2,7 +2,7 @@ import csv
 import random
 
 from db import db_session
-from models import School, Skill, StudyOption
+from db.models import School, Skill, StudyOption
 
 
 def read_data(filename, fields):
