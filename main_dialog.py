@@ -1,8 +1,8 @@
 from telegram.ext import ConversationHandler
 
-from settings import STUDY_OPTIONS, SKILLS
+from settings import SKILLS
 from texts import welcome_text
-from utils import study_options_keybord, skills_keyboard
+from utils import study_options_keybord, skills_keyboard, STUDY_OPTIONS
 
 
 def start_bot(update, context):

@@ -1,11 +1,28 @@
 from telegram import ReplyKeyboardMarkup
 
-from settings import SKILLS, STUDY_OPTIONS
+from settings import SKILLS
+from data_base.models import StudyOption
 
 
-def study_options_keybord():
+STUDY_OPTIONS = StudyOption.query.all()
+
+# СТАРАЯ КЛАВИАТУРАБ УДАЛЮ ВСКОРЕ 
+# def study_options_keybord():
+#     return ReplyKeyboardMarkup(
+#         [STUDY_OPTIONS, ['Затрудняюсь...']],
+#         one_time_keyboard=True, resize_keyboard=True
+#         )
+
+
+def study_options_keyboard(update, context):
+    study_options_keyboard = [['default']]
+    query_keyboard = StudyOption.query.all()
+    if query_keyboard:
+        study_options_keyboard = []
+        for option in query_keyboard:
+            study_options_keyboard.append(option)
     return ReplyKeyboardMarkup(
-        [STUDY_OPTIONS, ['Затрудняюсь...']],
+        [study_options_keyboard, ['Затрудняюсь...']],
         one_time_keyboard=True, resize_keyboard=True
         )
 

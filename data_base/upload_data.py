@@ -2,7 +2,7 @@ import csv
 import random
 
 from db import db_session
-from models import School, Skill, StudyOption
+from models import Course, School, Skill, StudyOption, SkillRelation
 
 
 def read_data(filename, fields):
@@ -48,31 +48,49 @@ def upload_schools(data):
     db_session.bulk_insert_mappings(School, all_schools, return_defaults=True)
     db_session.commit()
 
-# БУЩУЩИЙ ГЕНЕРАТОР ИНФЫ ДЛЯ ОСНОВНОЙ ТАБЛИЦЫ Courses
-# def upload_courses(num):
-#     data = generate_data(num)
-    
-    
-# def generate_course_data(num_rows):
-#     all_data = []
-#     for row in range(num_rows):
-#         course = {
-#             'study_options': random.randint(1, 3), 
 
-#             random.choice(opt), random.choice(skl), 'Название курса', 
-#             random.choice(skl), random.randint(20000, 200000), round(random.uniform(1, 5), 1),
-#             'Ccылка'
-#         }
-#         all_data.append(course)
-#     return(all_data)
+def upload_skills_relations(num):
+    relation_data = generate_skills_relations(num)
+    db_session.bulk_insert_mappings(SkillRelation, relation_data, return_defaults=True)
+    db_session.commit()
+
+
+def upload_courses(num):
+    course_data = generate_course_data(num)
+    db_session.bulk_insert_mappings(Course, course_data, return_defaults=True)
+    db_session.commit()
+
+
+def generate_skills_relations(num_rows):
+    all_data = []
+    for row in range(num_rows):
+        relation = {
+            'course_id': random.randint(15, 44),
+            'skill_id': random.randint(19, 33)
+        }
+        all_data.append(relation)
+    return all_data
+
+
+def generate_course_data(num_rows):
+    all_data = []
+    for row in range(num_rows):
+        course = {
+            'study_option_id': random.randint(4, 6),
+            'course_name': 'Название курса',
+            'school': random.randint(1, 15),
+            'cost': random.randint(20000, 200000),
+            'rating': round(random.uniform(1, 5), 1),
+            'link': 'Ccылка'
+        }
+        all_data.append(course)
+    return all_data
 
 
 if __name__ == "__main__":
-    # читаем инфо по направлениям и навыкам
-    study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
-    # загружаем направления и навыки в таблицы
-    upload_study_options(study_options_and_skills_data)
-    upload_skills(study_options_and_skills_data)
-    # читаем инфо по школам и загружаем в таблицу школ
-    schools_data = read_data('schools.csv', ['school'])
-    upload_schools(schools_data)
+    # study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
+    # upload_study_options(study_options_and_skills_data)
+    # upload_skills(study_options_and_skills_data)
+    # schools_data = read_data('schools.csv', ['school'])
+    # upload_schools(schools_data)
+    # upload_skills_relations(30)

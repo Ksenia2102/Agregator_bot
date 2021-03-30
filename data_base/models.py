@@ -10,7 +10,7 @@ class Course(Base):
     school = Column(Integer, ForeignKey('schools.id'), index=True, nullable=False)
     cost = Column(Integer)
     rating = Column(Float)
-    link = Column(String(400), unique=True)
+    link = Column(String)
 
     def __repr__(self):
         return f"{self.course_name}, {self.school}, {self.cost}, {self.rating}"
