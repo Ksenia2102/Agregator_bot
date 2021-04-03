@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from config import ENGINE
+from data_base.config import ENGINE
 
 
 engine = create_engine(ENGINE)

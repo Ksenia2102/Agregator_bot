@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
-from db import Base, engine
+from sqlalchemy.orm import relationship
+from data_base.db import Base, engine
 
 
 class Course(Base):
@@ -20,12 +21,21 @@ class StudyOption(Base):
     __tablename__ = 'study_options'
     id = Column(Integer, primary_key=True)
     study_option = Column(String)
+    skills = relationship('Skill', lazy='joined')
+
+    def __str__(self):
+        return f'{self.study_option}'
 
 
 class Skill(Base):
     __tablename__ = 'skills'
     id = Column(Integer, primary_key=True)
+    study_option_id = Column(Integer, ForeignKey('study_options.id'), index=True, nullable=False)
     skill = Column(String)
+    study_option = relationship('StudyOption', lazy='joined')
+
+    def __str__(self):
+        return f'{self.skill}'
 
 
 class School(Base):

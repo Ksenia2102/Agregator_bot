@@ -2,19 +2,19 @@ from telegram.ext import ConversationHandler
 
 from settings import SKILLS
 from texts import welcome_text
-from utils import study_options_keybord, skills_keyboard, STUDY_OPTIONS
+from utils import skills_keyboard, STUDY_OPTIONS, study_options_keyboard, get_study_options
 
 
 def start_bot(update, context):
     update.message.reply_text(
-        welcome_text, reply_markup=study_options_keybord()
+        welcome_text, reply_markup=study_options_keyboard()
         )
     return 'skills'
 
 
 def generate_skills(update, context):
     study_option = update.message.text
-    if study_option in STUDY_OPTIONS:
+    if study_option in get_study_options():
         update.message.reply_text(
             'Выберите навык, который хотите изучить.',
             reply_markup=skills_keyboard(study_option))

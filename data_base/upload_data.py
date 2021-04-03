@@ -28,9 +28,11 @@ def upload_study_options(data):
 def upload_skills(data):
     all_skills = []
     for row in data:
+        study_option = StudyOption.query.filter_by(study_option=row['study_option']).first()
         list_of_skills = row['skills'].split(',')
         for skill in list_of_skills:
             each_skill = {
+                'study_option_id': study_option.id,
                 'skill': skill
             }
             all_skills.append(each_skill)
@@ -88,9 +90,9 @@ def generate_course_data(num_rows):
 
 
 if __name__ == "__main__":
-    # study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
+    study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
     # upload_study_options(study_options_and_skills_data)
-    # upload_skills(study_options_and_skills_data)
+    upload_skills(study_options_and_skills_data)
     # schools_data = read_data('schools.csv', ['school'])
     # upload_schools(schools_data)
     # upload_skills_relations(30)
