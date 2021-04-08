@@ -1,10 +1,10 @@
 import logging
 
 from telegram.ext import (CommandHandler, ConversationHandler, Filters,
-                          MessageHandler, Updater)
+                          MessageHandler, Updater, CallbackQueryHandler)
 
 import settings
-from main_dialog import generate_courses, generate_skills, start_bot
+from main_dialog import generate_courses_list, generate_skills, start_bot
 
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 
@@ -24,8 +24,8 @@ def main():
     main_dialog = ConversationHandler(
         entry_points=[CommandHandler('start', start_bot)],
         states={
-            'skills': [MessageHandler(Filters.text, generate_skills)],
-            'courses': [MessageHandler(Filters.text, generate_courses)]
+            'skills': [CallbackQueryHandler(generate_skills)],
+            'courses': [CallbackQueryHandler(generate_courses_list)]
         },
         fallbacks=[]
     )
