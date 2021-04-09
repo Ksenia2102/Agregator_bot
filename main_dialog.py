@@ -1,8 +1,8 @@
 from telegram.ext import ConversationHandler
 
+from data_base.models import Skill
 from texts import welcome_text, skill_text
 from utils import skills_keyboard, study_options_keyboard, get_study_options
-from data_base.models import Skill
 
 
 def start_bot(update, context):
@@ -28,10 +28,10 @@ def generate_skills(update, context):
 #     return ConversationHandler.END
      
 
-# def generate_courses_list(update, context):
-#     skill = context.user_data
-#     if skill in Skill.query.all():
-#         update.message.reply_text(
-#             f'ЗДЕСЬ БУДЕТ СПИСОК КУРСОВ ПО {skill}'
-#             )
-#         return ConversationHandler.END
+def generate_courses_list(update, context):
+    skill = context.user_data
+    if skill in Skill.query.all():
+        update.message.reply_text(
+            f'ЗДЕСЬ БУДЕТ СПИСОК КУРСОВ ПО {skill}'
+            )
+        return ConversationHandler.END
