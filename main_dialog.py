@@ -1,8 +1,8 @@
 from telegram.ext import ConversationHandler
 
-from settings import SKILLS
-from texts import welcome_text
-from utils import skills_keyboard, STUDY_OPTIONS, study_options_keyboard, get_study_options
+from data_base.models import Skill
+from texts import welcome_text, skill_text
+from utils import skills_keyboard, study_options_keyboard, get_study_options
 
 
 def start_bot(update, context):
@@ -13,20 +13,25 @@ def start_bot(update, context):
 
 
 def generate_skills(update, context):
-    study_option = update.message.text
+    query = update.callback_query
+    query.answer()
+    study_option = update.callback_query.data
     if study_option in get_study_options():
-        update.message.reply_text(
-            'Выберите навык, который хотите изучить.',
-            reply_markup=skills_keyboard(study_option))
+        query.edit_message_text(text=skill_text, reply_markup=skills_keyboard(study_option))
         return 'courses'
 
 
-def generate_courses(update, context):
-    course_name = update.message.text
-    print(SKILLS.values())
-    for skills in SKILLS.values():
-        if course_name in skills:
-            update.message.reply_text(
-                f'ЗДЕСЬ БУДЕТ СПИСОК КУРСОВ ПО {course_name}'
-                )
-            return ConversationHandler.END
+# WIP будущая функция развилки по цене и рейтингу
+# def choose_order(update, context):
+#     user_choice = context.user_data
+#     # вызов функции генерации
+#     return ConversationHandler.END
+     
+
+def generate_courses_list(update, context):
+    skill = context.user_data
+    if skill in Skill.query.all():
+        update.message.reply_text(
+            f'ЗДЕСЬ БУДЕТ СПИСОК КУРСОВ ПО {skill}'
+            )
+        return ConversationHandler.END

@@ -50,6 +50,10 @@ class SkillRelation(Base):
     course_id = Column(Integer, ForeignKey('courses.id'), index=True, nullable=False)
     skill_id = Column(Integer, ForeignKey('skills.id'), index=True, nullable=False)
 
+    def __repr__(self):
+        return f'Id курсов по нужному навыку {self.course_id}'
+
+
 
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)

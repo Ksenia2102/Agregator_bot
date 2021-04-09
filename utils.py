@@ -1,7 +1,6 @@
-from telegram import ReplyKeyboardMarkup
+from telegram import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 
-from settings import SKILLS
-from data_base.models import StudyOption, Skill
+from data_base.models import StudyOption, Skill, SkillRelation, Course
 from data_base.db import db_session
 
 
@@ -15,10 +14,11 @@ def get_study_options():
 
 
 def study_options_keyboard():
-    return ReplyKeyboardMarkup(
-        [get_study_options(), ['Затрудняюсь...']],
-        one_time_keyboard=True, resize_keyboard=True
-        )
+    keyboard = []
+    for option in get_study_options():
+        keyboard.append([InlineKeyboardButton(option, callback_data=option)])
+    keyboard.append([InlineKeyboardButton('Затрудняюсь', callback_data='Go to description')])
+    return InlineKeyboardMarkup(keyboard)
 
 
 def skills_keyboard(study_option_name):
@@ -26,7 +26,32 @@ def skills_keyboard(study_option_name):
     skills = db_session.query(Skill.study_option_id, Skill.skill).filter(Skill.study_option_id == study_option.id)
     skill_keyboard = []
     for id_, skill in skills:
-        skill_keyboard.append(skill)
-    return ReplyKeyboardMarkup(
-        [skill_keyboard], one_time_keyboard=True, resize_keyboard=True
-    )
+        skill_keyboard.append([InlineKeyboardButton(skill, callback_data=skill)])
+    return InlineKeyboardMarkup(skill_keyboard)
+
+# WIP будущая функция генерации курсов 
+
+# def generate_courses_list():
+#     """
+#     таблица 5
+#     id навыка -> id курсов
+#     таблица 1 
+#     все курсы по нужному id 
+#     order by cost или rating 
+#     вывод 
+#     Лучшие курсы  по направлению (название)
+#     1. Имя курса, имя школы, стоимость, оценка, ссылка 
+#     2. 
+#     """
+
+#     answer = 'Web-разработка'
+
+#     skill = Skill.query.filter_by(skill=answer).first()
+    
+#     list_courses = SkillRelation.query.filter_by(skill.id == SkillRelation.skill_id)
+
+#     print(list_courses)
+
+
+# if __name__ == ('__main__'):
+#     generate_courses_list()
