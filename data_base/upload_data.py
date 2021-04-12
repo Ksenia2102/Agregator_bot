@@ -1,7 +1,7 @@
 import csv
 import random
 
-from db import db_session
+from data_base.db import db_session
 from models import Course, School, Skill, StudyOption, SkillRelation
 
 
@@ -68,7 +68,7 @@ def generate_skills_relations(num_rows):
     for row in range(num_rows):
         relation = {
             'course_id': random.randint(15, 44),
-            'skill_id': random.randint(19, 33)
+            'skill_id': random.randint(1, 15)
         }
         all_data.append(relation)
     return all_data
@@ -90,9 +90,9 @@ def generate_course_data(num_rows):
 
 
 if __name__ == "__main__":
-    study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
+    # study_options_and_skills_data = read_data('study_options_and_skills.csv', ['study_option', 'skills'])
     # upload_study_options(study_options_and_skills_data)
-    upload_skills(study_options_and_skills_data)
+    # upload_skills(study_options_and_skills_data)
     # schools_data = read_data('schools.csv', ['school'])
     # upload_schools(schools_data)
-    # upload_skills_relations(30)
+    upload_skills_relations(30)

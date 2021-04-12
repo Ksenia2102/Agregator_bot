@@ -12,9 +12,10 @@ class Course(Base):
     cost = Column(Integer)
     rating = Column(Float)
     link = Column(String)
+    school_info = relationship('School', lazy='joined')
 
     def __repr__(self):
-        return f"{self.course_name}, {self.school}, {self.cost}, {self.rating}"
+        return f"{self.course_name}, Школа: {self.school_info.school_name}, Стоимость: {self.cost}, Средняя оценка: {self.rating}, {self.link}"
 
 
 class StudyOption(Base):
@@ -43,6 +44,9 @@ class School(Base):
     id = Column(Integer, primary_key=True)
     school_name = Column(String)
 
+    def __repr__(self):
+        return f'{self.school_name}'
+
 
 class SkillRelation(Base):
     __tablename__ = 'skill_relations'
@@ -52,7 +56,6 @@ class SkillRelation(Base):
 
     def __repr__(self):
         return f'Id курсов по нужному навыку {self.course_id}'
-
 
 
 if __name__ == "__main__":

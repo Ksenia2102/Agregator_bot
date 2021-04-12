@@ -1,4 +1,5 @@
 from telegram import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from sqlalchemy.orm import joinedload
 
 from data_base.models import StudyOption, Skill, SkillRelation, Course
 from data_base.db import db_session
@@ -29,29 +30,32 @@ def skills_keyboard(study_option_name):
         skill_keyboard.append([InlineKeyboardButton(skill, callback_data=skill)])
     return InlineKeyboardMarkup(skill_keyboard)
 
-# WIP будущая функция генерации курсов 
 
-# def generate_courses_list():
-#     """
-#     таблица 5
-#     id навыка -> id курсов
-#     таблица 1 
-#     все курсы по нужному id 
-#     order by cost или rating 
-#     вывод 
-#     Лучшие курсы  по направлению (название)
-#     1. Имя курса, имя школы, стоимость, оценка, ссылка 
-#     2. 
-#     """
-
-#     answer = 'Web-разработка'
-
-#     skill = Skill.query.filter_by(skill=answer).first()
-    
-#     list_courses = SkillRelation.query.filter_by(skill.id == SkillRelation.skill_id)
-
-#     print(list_courses)
+# клава для выбора ранжирования
+def order_choice_keyboard():
+    keyboard = [
+        [InlineKeyboardButton('По стоимости', callback_data='cost')],
+        [InlineKeyboardButton('По рейтингу', callback_data='rating')]
+    ]
+    return InlineKeyboardMarkup(keyboard)
 
 
-# if __name__ == ('__main__'):
-#     generate_courses_list()
+# генерация списка курсов из базы
+def generate_courses_list(order_choice, skill_choice):
+    skill = Skill.query.filter_by(skill=skill_choice).first()
+
+    # фильтруем курсы по таблице SkillRelation
+    filtered_courses_id = SkillRelation.query.filter(SkillRelation.skill_id == skill.id).all()
+    courses_id_list = [c.course_id for c in filtered_courses_id]
+
+    # в зависимости от пролетевшего выбора от пользователя ранжируем курсы
+    if order_choice == 'cost':
+        courses_list = db_session.query(Course).filter(Course.id.in_(courses_id_list)).order_by(Course.cost).options(joinedload(Course.school_info)).all()
+    elif order_choice == 'rating':
+        courses_list = db_session.query(Course).filter(Course.id.in_(courses_id_list)).order_by(Course.rating.desc()).options(joinedload(Course.school_info)).all()
+
+    return '\n'.join([str(c) for c in courses_list])
+
+
+if __name__ == ('__main__'):
+    generate_courses_list()
