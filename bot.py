@@ -4,7 +4,7 @@ from telegram.ext import (CommandHandler, ConversationHandler, Filters,
                           MessageHandler, Updater, CallbackQueryHandler)
 
 import settings
-from main_dialog import generate_courses_list, generate_skills, start_bot
+from main_dialog import generate_courses, generate_skills, start_bot, choose_order
 
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 
@@ -25,7 +25,8 @@ def main():
         entry_points=[CommandHandler('start', start_bot)],
         states={
             'skills': [CallbackQueryHandler(generate_skills)],
-            'courses': [CallbackQueryHandler(generate_courses_list)]
+            'order_choice': [CallbackQueryHandler(choose_order)],
+            'courses': [CallbackQueryHandler(generate_courses)]
         },
         fallbacks=[]
     )

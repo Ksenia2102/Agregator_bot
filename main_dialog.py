@@ -1,8 +1,9 @@
 from telegram.ext import ConversationHandler
 
 from data_base.models import Skill
-from texts import welcome_text, skill_text
-from utils import skills_keyboard, study_options_keyboard, get_study_options
+from texts import skill_text, welcome_text
+from utils import (get_study_options, order_choice_keyboard, skills_keyboard,
+                   study_options_keyboard, generate_courses_list)
 
 
 def start_bot(update, context):
@@ -18,20 +19,26 @@ def generate_skills(update, context):
     study_option = update.callback_query.data
     if study_option in get_study_options():
         query.edit_message_text(text=skill_text, reply_markup=skills_keyboard(study_option))
-        return 'courses'
+        return 'order_choice'
 
 
-# WIP будущая функция развилки по цене и рейтингу
-# def choose_order(update, context):
-#     user_choice = context.user_data
-#     # вызов функции генерации
-#     return ConversationHandler.END
-     
+# выбираем как ранжировать курсы
+def choose_order(update, context):
+    query = update.callback_query
+    query.answer()
+    context.user_data['skill'] = update.callback_query.data
+    query.edit_message_text(
+        'Как бы хотели ранжировать курсы?', reply_markup=order_choice_keyboard()
+    )
+    return 'courses'
 
-def generate_courses_list(update, context):
-    skill = context.user_data
-    if skill in Skill.query.all():
-        update.message.reply_text(
-            f'ЗДЕСЬ БУДЕТ СПИСОК КУРСОВ ПО {skill}'
-            )
-        return ConversationHandler.END
+
+# вывод курсов на экран 
+def generate_courses(update, context):
+    query = update.callback_query
+    query.answer()
+    order_choice = update.callback_query.data  # rating or cost
+    skill_choice = context.user_data['skill'] 
+    courses_list = generate_courses_list(order_choice, skill_choice)
+    query.edit_message_text(courses_list)
+    return ConversationHandler.END
