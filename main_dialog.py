@@ -10,6 +10,7 @@ from utils import (
     skills_keyboard,
     study_options_keyboard,
     generate_courses_list,
+    trouble_keyboard
 )
 
 
@@ -23,13 +24,6 @@ def generate_skills(update, context):
     query.answer()
     study_option = update.callback_query.data
 
-    trouble_keyboard = list(
-        map(
-            lambda item: [InlineKeyboardButton(text=item[1][0], callback_data=item[0])],
-            trouble.items(),
-        )
-    )
-    trouble_keyboard.append([InlineKeyboardButton("В начало", callback_data="skills")])
     if study_option in get_study_options():
         query.edit_message_text(
             text=skill_text, reply_markup=skills_keyboard(study_option)
@@ -37,12 +31,12 @@ def generate_skills(update, context):
         return "order_choice"
     else:
         query.edit_message_text(
-            text=trouble_desc, reply_markup=InlineKeyboardMarkup(trouble_keyboard)
+            text=trouble_desc, reply_markup=trouble_keyboard()
         )
         return "troubles"
 
 
-def troubles(update, context):
+def get_troubles(update, context):
     query = update.callback_query
     query.answer()
     option = update.callback_query.data
@@ -59,7 +53,6 @@ def troubles(update, context):
         return "skills"
 
 
-# выбираем как ранжировать курсы
 def choose_order(update, context):
     query = update.callback_query
     query.answer()
@@ -70,25 +63,16 @@ def choose_order(update, context):
     return "courses"
 
 
-# вывод курсов на экран
 def generate_courses(update, context):
     query = update.callback_query
     query.answer()
-    order_choice = update.callback_query.data  # rating or cost
+    order_choice = update.callback_query.data
     skill_choice = context.user_data["skill"]
 
-    res = (
-        db_session.query(Skill.skill, Course)
-        .filter_by(skill=skill_choice)
-        .join(Course, Course.study_option_id == Skill.study_option_id)
-        .order_by(asc(getattr(Course, order_choice)))
-        .all()
-    )
-
-    res = " ".join([i for i in list(map(lambda x: str(*x[1:]) + "\n", res))])
+    courses = generate_courses_list(order_choice, skill_choice)
 
     if query:
-        query.edit_message_text(res)
+        query.edit_message_text(courses)
         return ConversationHandler.END
     else:
         return ConversationHandler.END
