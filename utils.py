@@ -3,6 +3,7 @@ from sqlalchemy.orm import joinedload
 
 from data_base.models import StudyOption, Skill, SkillRelation, Course
 from data_base.db import db_session
+from texts import trouble
 
 
 def get_study_options():
@@ -24,6 +25,17 @@ def study_options_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 
+def trouble_keyboard():
+    trouble_keyboard = list(
+        map(
+            lambda item: [InlineKeyboardButton(text=item[1][0], callback_data=item[0])],
+            trouble.items(),
+        )
+    )
+    trouble_keyboard.append([InlineKeyboardButton("В начало", callback_data="skills")])
+    return InlineKeyboardMarkup(trouble_keyboard)
+
+
 def skills_keyboard(study_option_name):
     study_option = StudyOption.query.filter_by(study_option=study_option_name).first()
     skills = db_session.query(Skill.study_option_id, Skill.skill).filter(
@@ -35,7 +47,6 @@ def skills_keyboard(study_option_name):
     return InlineKeyboardMarkup(skill_keyboard)
 
 
-# клава для выбора ранжирования
 def order_choice_keyboard():
     keyboard = [
         [InlineKeyboardButton("По стоимости", callback_data="cost")],
@@ -44,17 +55,12 @@ def order_choice_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 
-# генерация списка курсов из базы
 def generate_courses_list(order_choice, skill_choice):
     skill = Skill.query.filter_by(skill=skill_choice).first()
 
-    # фильтруем курсы по таблице SkillRelation
-    filtered_courses_id = SkillRelation.query.filter(
-        SkillRelation.skill_id == skill.id
-    ).all()
+    filtered_courses_id = SkillRelation.query.filter(SkillRelation.skill_id == skill.id).all()
     courses_id_list = [c.course_id for c in filtered_courses_id]
 
-    # в зависимости от пролетевшего выбора от пользователя ранжируем курсы
     if order_choice == "cost":
         courses_list = (
             db_session.query(Course)

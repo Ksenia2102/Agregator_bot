@@ -10,7 +10,7 @@ from telegram.ext import (
 )
 
 import settings
-from main_dialog import generate_courses, generate_skills, start_bot, choose_order, troubles
+from main_dialog import generate_courses, generate_skills, start_bot, choose_order, get_troubles
 
 logging.basicConfig(filename="bot.log", level=logging.INFO)
 
@@ -34,7 +34,7 @@ def main():
             "skills": [CallbackQueryHandler(generate_skills)],
             "order_choice": [CallbackQueryHandler(choose_order)],
             "courses": [CallbackQueryHandler(generate_courses)],
-            "troubles": [CallbackQueryHandler(troubles)]
+            "troubles": [CallbackQueryHandler(get_troubles)]
         },
         fallbacks=[],
     )
