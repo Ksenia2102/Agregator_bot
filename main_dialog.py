@@ -1,17 +1,14 @@
-from telegram.ext import ConversationHandler
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from sqlalchemy import asc
-from data_base.models import Skill, Course
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ConversationHandler
+
 from data_base.db import db_session
-from texts import skill_text, welcome_text, trouble, trouble_desc
-from utils import (
-    get_study_options,
-    order_choice_keyboard,
-    skills_keyboard,
-    study_options_keyboard,
-    generate_courses_list,
-    trouble_keyboard
-)
+from data_base.models import Course, Skill
+from texts import skill_text, trouble, trouble_desc, welcome_text
+from utils import (generate_courses_list, get_study_options,
+                   order_choice_keyboard, skills_keyboard,
+                   study_options_keyboard, trouble_keyboard)
+
 
 
 def start_bot(update, context):
