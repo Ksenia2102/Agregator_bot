@@ -4,7 +4,6 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 from data_base.config import ENGINE
 
-
 engine = create_engine(ENGINE)
 db_session = scoped_session(sessionmaker(bind=engine))
 

@@ -1,16 +1,12 @@
 import logging
 
-from telegram.ext import (
-    CommandHandler,
-    ConversationHandler,
-    Filters,
-    MessageHandler,
-    Updater,
-    CallbackQueryHandler,
-)
+from telegram.ext import (CallbackQueryHandler, CommandHandler,
+                          ConversationHandler, Filters, MessageHandler,
+                          Updater)
 
 import settings
-from main_dialog import generate_courses, generate_skills, start_bot, choose_order, get_troubles
+from main_dialog import (choose_order, generate_courses, generate_skills,
+                         get_troubles, start_bot)
 
 logging.basicConfig(filename="bot.log", level=logging.INFO)
 

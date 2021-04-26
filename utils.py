@@ -1,8 +1,9 @@
-from telegram import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from sqlalchemy.orm import joinedload
+from telegram import (InlineKeyboardButton, InlineKeyboardMarkup,
+                      ReplyKeyboardMarkup)
 
-from data_base.models import StudyOption, Skill, SkillRelation, Course
 from data_base.db import db_session
+from data_base.models import Course, Skill, SkillRelation, StudyOption
 from texts import trouble
 
 
@@ -61,19 +62,15 @@ def generate_courses_list(order_choice, skill_choice):
     filtered_courses_id = SkillRelation.query.filter(SkillRelation.skill_id == skill.id).all()
     courses_id_list = [c.course_id for c in filtered_courses_id]
 
-    if order_choice == "cost":
-        courses_list = (
+    order_choices = {
+        "cost": Course.cost,
+        "rating": Course.rating.desc()
+    }
+
+    courses_list = (
             db_session.query(Course)
             .filter(Course.id.in_(courses_id_list))
-            .order_by(Course.cost)
-            .options(joinedload(Course.school_info))
-            .all()
-        )
-    elif order_choice == "rating":
-        courses_list = (
-            db_session.query(Course)
-            .filter(Course.id.in_(courses_id_list))
-            .order_by(Course.rating.desc())
+            .order_by(order_choices[order_choice])
             .options(joinedload(Course.school_info))
             .all()
         )
