@@ -10,6 +10,7 @@ from utils import (generate_courses_list, get_study_options,
                    study_options_keyboard, trouble_keyboard)
 
 
+
 def start_bot(update, context):
     update.message.reply_text(welcome_text, reply_markup=study_options_keyboard())
     return "skills"

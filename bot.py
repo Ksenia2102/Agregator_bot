@@ -5,6 +5,7 @@ from telegram.ext import (CallbackQueryHandler, CommandHandler,
                           Updater)
 
 import settings
+
 from main_dialog import (choose_order, generate_courses, generate_skills,
                          get_troubles, start_bot)
 
